@@ -39,21 +39,22 @@
         this.each(function () {
             var easyTree = $(this);
             $.each($(easyTree).find('ul > li'), function() {
-                var text;
+                var text, subtext, children;
                 if($(this).is('li:has(ul)')) {
-                    var children = $(this).find(' > ul');
+                    children = $(this).find(' > ul');
                     $(children).remove();
-                    text = $(this).text();
-                    $(this).html('<span><span class="glyphicon"></span><a href="javascript: void(0);"></a> </span>');
-                    $(this).find(' > span > span').addClass('glyphicon-folder-open');
-                    $(this).find(' > span > a').text(text);
-                    $(this).append(children);
+                }               
+				text = $(this).text();
+				subtext = $(this).find(' > .node_id').text();
+				text = text.replace(subtext, '');
+				$(this).html('<span><span class="glyphicon"></span><a href="javascript: void(0);"></a><div class="node_id" style="display: none">'+subtext+'</div> </span>');
+				$(this).find(' > span > a').text(text);
+				if(children) {                   
+					$(this).find(' > span > span').addClass('glyphicon-folder-open');
+					$(this).append(children);
                 }
-                else {
-                    text = $(this).text();
-                    $(this).html('<span><span class="glyphicon"></span><a href="javascript: void(0);"></a> </span>');
+                else {                   
                     $(this).find(' > span > span').addClass('glyphicon-file');
-                    $(this).find(' > span > a').text(text);
                 }
             });
 
@@ -199,7 +200,8 @@
                 });
             }
 
-            // collapse or expand
+            
+			
             $(easyTree).delegate('li.parent_li > span', 'click', function (e) {
                 var children = $(this).parent('li.parent_li').find(' > ul > li');
                 if (children.is(':visible')) {
@@ -217,6 +219,7 @@
                 }
                 e.stopPropagation();
             });
+			
 
             // selectable, only single select
             if (options.selectable) {
@@ -263,3 +266,17 @@
         });
     };
 })(jQuery);
+
+
+// collapse or expand
+function expandAll ($self) {
+	var $everything = $('#list li, #list ul, #list span, #list a');
+	$everything.show();
+	$('#list li.parent_li').each( function(i) {
+		console.log($(this));
+		$(this).attr('title', "select")
+		.find(' > span > span.glyphicon')
+		.addClass('glyphicon-folder-open')
+		.removeClass('glyphicon-folder-close');
+	});
+};

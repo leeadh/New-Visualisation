@@ -7,18 +7,23 @@
     border: none;
     border-top: none;
     padding-bottom: 15px;
+	min-width: 1000px;
 }
 
 .easy-tree > ul {
     padding-left: 15px;
+	width: 100%;
 }
 
 .easy-tree li {
     list-style-type: none;
     margin: 0;
     padding: 10px 5px 0 5px;
-    position: relative
+    position: relative;
+	
 }
+
+
 
 .easy-tree li::before, .easy-tree li::after {
     content: '';
@@ -47,7 +52,8 @@
     border-radius: 3px;
     display: inline-block;
     padding: 5px;
-    text-decoration: none
+    text-decoration: none;
+	//background-color: #e56155;
 }
 
 .easy-tree li.parent_li > span {
@@ -94,6 +100,7 @@
 
 .easy-tree .easy-tree-toolbar {
     background-color: #fff;
+	width: 100%;
 }
 
 .easy-tree .easy-tree-toolbar > div {

@@ -18,6 +18,8 @@ background: #eee;
 </head>
 <body>
 <div id="jquery-script-menu">
+<button id="expandAll" onclick="expandAll()">expand all!</button> 
+
 <div class="jquery-script-center">
 
 <div class="jquery-script-clear"></div>
@@ -28,24 +30,7 @@ background: #eee;
 
 <div class="easy-tree">
 <ul id="list">
-	<li>Example 1</li>
-	<li>Example 2</li>
-	<li>Example 3
-		<ul>
-			<li>Example 1</li>
-			<li>Example 2
-				<ul>
-					<li>Example 1</li>
-					<li>Example 2</li>
-					<li>Example 3</li>
-					<li>Example 4</li>
-				</ul>
-			</li>
-			<li>Example 3</li>
-			<li>Example 4</li>
-		</ul>
-	</li>
-<li>Example 0</li>
+	
 
 </ul>
 </div>
@@ -787,26 +772,23 @@ var data = {
 	]
 };
 
-var ul = document.getElementById("list");
-
-for (item in data) {
-  for (subItem in data[item]) {
-     //console.log(data[item][subItem].subcat);
-     var li = document.createElement('li');
-     var uladd = document.createElement('ul');
-     var subli = document.createElement('li');
-     li.appendChild(document.createTextNode(data[item][subItem].resp));
-     subli.appendChild(document.createTextNode(data[item][subItem].subcat));
-     ul.appendChild(li);//
-     subli.appendChild(subli);
-     console.log(uladd);
-     
-
-     for (subitems in data[item][subItem]){
-     }
-  }
+var $ul = $("#list"), st="<li>", en="</li>", st1="<ul>", en1="</ul>", st2="<div class='node_id' style='display:none'>", en2="</div>";
+function renderTree(curr_node, $dom) {
+	let $self = $(st + curr_node.resp + en);
+	$self.append($(st2 + curr_node.id + en2));
+	//console.log("$self=", $self);
+	$dom.append($self);
+	if (Array.isArray(curr_node.subcat)) {
+		$self.append(st1+en1);
+		let $new_dom = $("ul", $self);
+		for (let i = 0; i < curr_node.subcat.length; i++) {
+			renderTree(curr_node.subcat[i], $new_dom);
+		}
+	}
+	//console.log("$dom=", $dom);
 }
 
+renderTree(data, $ul);
 
 
     (function ($) {
